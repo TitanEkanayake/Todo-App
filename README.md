@@ -1,46 +1,62 @@
-# Getting Started with Create React App
+# React TypeScript Todo Application
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Overview
 
-## Available Scripts
+This project is a Todo application built using React with TypeScript. The frontend interacts with a .NET API to perform CRUD operations on user data and todo items. Key dependencies used in this project include TypeScript, Tailwind CSS, React Router, React Redux, and Axios.
 
-In the project directory, you can run:
+## Prerequisites
 
-### `npm start`
+Before running this project, ensure that you have the following:
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+- [Node.js](https://nodejs.org/) - JavaScript runtime for running the application.
+- [npm](https://www.npmjs.com/) - Package manager for JavaScript.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## Getting Started
 
-### `npm test`
+1. Clone the repository to your local machine.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+```bash
+git clone [https://github.com/your-username/react-todo-app.git](https://github.com/TitanEkanayake/Todo-App.git)
+```
 
-### `npm run build`
+2. Navigate to the project directory.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+```bash
+cd react-todo-app
+```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+3. Install the required dependencies.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```bash
+npm install
+```
 
-### `npm run eject`
+## Running the Application
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+To run the Todo application, you need to have the .NET API running. Clone the API repository from [here](https://github.com/TitanEkanayake/.Net-SQLite-database-API.git) and follow the instructions in its README file to set it up.
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Once the API is running, return to the Todo application directory and start the React app.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+```bash
+npm start
+```
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+Visit [http://localhost:3000](http://localhost:3000) in your web browser to access the Todo application.
 
-## Learn More
+## Usage
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+- Sign up or log in using the provided credentials (admin@gmail.com, password: 123) or create a new account.
+- Access the Todo application from the home page.
+- Perform CRUD operations on your todo list.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## Dependencies
+
+- [TypeScript](https://www.typescriptlang.org/) - A superset of JavaScript that adds static types.
+- [Tailwind CSS](https://tailwindcss.com/) - A utility-first CSS framework.
+- [React Router](https://reactrouter.com/) - Declarative routing for React.js.
+- [React Redux](https://react-redux.js.org/) - Official React bindings for Redux.
+- [Axios](https://axios-http.com/) - Promise-based HTTP client for the browser and Node.js.
+
+## License
+
+This project is licensed under the [MIT License](LICENSE).
