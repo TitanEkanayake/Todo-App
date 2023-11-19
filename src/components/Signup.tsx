@@ -40,11 +40,11 @@ const Signup = () => {
           <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
             <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
               <h1 className="mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-white">
-                Customer{" "}
+                Welcome{" "}
                 <mark className="px-2 text-white bg-blue-600 rounded dark:bg-blue-500">
-                  Management
+                  TodoList
                 </mark>{" "}
-                Portal
+                Signup Portal
               </h1>
               <form className="space-y-4 md:space-y-6" action="#">
                 <div>

@@ -51,7 +51,7 @@ const Login = () => {
               <mark className="px-2 text-white bg-blue-600 rounded dark:bg-blue-500">
                 TodoList
               </mark>{" "}
-              Portal
+              Login Portal
             </h1>
             <form className="space-y-4 md:space-y-6" action="#">
               <div>
