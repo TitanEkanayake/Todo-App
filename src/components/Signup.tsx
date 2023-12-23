@@ -17,8 +17,16 @@ const Signup = () => {
     e.preventDefault();
     dispatch(makeRequest());
 
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!emailRegex.test(email)) {
+      dispatch(failRequest("Invalid email address"));
+      alert("Invalid email !");
+      return;
+    }
+
     try {
-      await axios.post("https://localhost:7185/api/Admins", {
+      await axios.post("http://localhost:4000/users", {
         name,
         email,
         password,

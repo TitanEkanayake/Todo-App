@@ -16,7 +16,7 @@ const Login = () => {
     dispatch(makeRequest());
 
     try {
-      const response = await axios.get("https://localhost:7185/api/Admins");
+      const response = await axios.get("http://localhost:4000/users");
       const users = response.data;
 
       // Check if there is a user with the provided email and password
@@ -25,7 +25,7 @@ const Login = () => {
       );
 
       if (loggedInUser) {
-        userId = loggedInUser.id;
+        userId = loggedInUser._id;
         dispatch(setUserId(userId));
         navigate("/todolist");
       } else {
