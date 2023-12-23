@@ -57,7 +57,7 @@ export const FetchLoggedinUserObj = (id: string) => {
     dispatch(makeRequest());
 
     try {
-      const res = await axios.get(`https://localhost:7185/api/Admins/${id}`);
+      const res = await axios.get(`http://localhost:4000/users/${id}`);
       const userobj = res.data;
       dispatch(setUserObj(userobj));
     } catch (error: any) {
@@ -71,7 +71,7 @@ export const FetchTodoList = () => {
     dispatch(makeRequest());
 
     try {
-      const response = await axios.get("https://localhost:7185/api/TodoList");
+      const response = await axios.get("http://localhost:4000/todos");
       const todolist = response.data;
       dispatch(geTodoList(todolist));
     } catch (error: any) {
@@ -85,7 +85,7 @@ export const FunctionAddTodo = (data: any) => {
     dispatch(makeRequest());
 
     try {
-      await axios.post("https://localhost:7185/api/TodoList", data);
+      await axios.post("http://localhost:4000/todos", data);
       dispatch(addTodo());
     } catch (error: any) {
       dispatch(failRequest(error.message));
@@ -98,7 +98,7 @@ export const RemoveTodo = (id: number) => {
     dispatch(makeRequest());
 
     try {
-      await axios.delete(`https://localhost:7185/api/TodoList?id=${id}`);
+      await axios.delete(`http://localhost:4000/todos/${id}`);
       dispatch(deleteTodo());
     } catch (error: any) {
       dispatch(failRequest(error.message));
@@ -111,7 +111,7 @@ export const FunctionUpdateTodo = (data: any) => {
     dispatch(makeRequest());
 
     try {
-      await axios.put(`https://localhost:7185/api/TodoList`, data);
+      await axios.patch(`http://localhost:4000/todos/${data._id}`, data);
       dispatch(updateTodo());
     } catch (error: any) {
       dispatch(failRequest(error.message));

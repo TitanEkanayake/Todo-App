@@ -10,45 +10,49 @@ import {
   RemoveTodo,
 } from "../Redux/Action";
 import { useNavigate } from "react-router-dom";
-interface Todo {
-  id: number;
-  text: string;
-  isDone: boolean;
-}
+// interface Todo {
+//   _id: string;
+//   text: string;
+//   description: string;
+//   isDone: boolean;
+// }
 interface User {
-  id: string;
+  _id: string;
   name: string;
   email: string;
   password: string;
-  phoneNumber: string;
-  role: string;
 }
 const TodoList = (props: any) => {
   const navigate = useNavigate();
   const [newTodo, setNewTodo] = useState<string>("");
+  const [newDescription, setNewDescription] = useState<string>("");
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [editingTodoId, setEditingTodoId] = useState<number | null>(null);
   const [editedTodoText, setEditedTodoText] = useState<string>("");
+  const [editedTodoDescription, setEditedTodoDescription] =
+    useState<string>("");
   const dispatch: any = useDispatch();
   const userId: string = useSelector(selectUserId) || "";
 
   const userObj: User = useSelector(selectUserObj);
 
   useEffect(() => {
-    // Load todo list
-    dispatch(FetchTodoList());
-
     // Fetch user data based on userId
     if (userId) {
       dispatch(FetchLoggedinUserObj(userId));
     }
+    // Load todo list
+    dispatch(FetchTodoList());
   }, [userId, dispatch]);
+
   // Function to add a new todo
   const addTodo = async (e: React.MouseEvent) => {
     e.preventDefault();
     if (newTodo.trim() !== "") {
       const newTodoItem: any = {
-        text: newTodo,
+        name: newTodo,
+        description: newDescription,
+        userId: userId,
         isDone: false,
       };
       await dispatch(FunctionAddTodo(newTodoItem));
@@ -64,29 +68,36 @@ const TodoList = (props: any) => {
   };
 
   // Function to toggle the 'done' status of a todo
-  const toggleDone = async (todo: Todo) => {
+  const toggleDone = async (todo: any) => {
     // Dispatch the update to Redux
     const toggleUpdate: object = { ...todo, isDone: !todo.isDone };
     await dispatch(FunctionUpdateTodo(toggleUpdate));
     await dispatch(FetchTodoList());
   };
 
-  const startEditingTodo = (id: number, text: string) => {
+  const startEditingTodo = (id: number, name: string, description: string) => {
     setEditingTodoId(id);
-    setEditedTodoText(text);
+    setEditedTodoText(name);
+    setEditedTodoDescription(description);
   };
 
   const cancelEditingTodo = () => {
     setEditingTodoId(null);
     setEditedTodoText("");
+    setEditedTodoDescription("");
   };
 
   const submitEditedTodo = async (id: number) => {
-    const data: object = { id: id, text: editedTodoText };
+    const data: object = {
+      _id: id,
+      name: editedTodoText,
+      description: editedTodoDescription,
+    };
     await dispatch(FunctionUpdateTodo(data));
 
     setEditingTodoId(null);
     setEditedTodoText("");
+    setEditedTodoDescription("");
     await dispatch(FetchTodoList());
   };
 
@@ -97,9 +108,13 @@ const TodoList = (props: any) => {
   };
 
   // Filter todos based on the search term
-  const filteredTodos = (props.todo.todoList || []).filter((todo: Todo) =>
-    todo.text.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredTodos = (props.todo.todoList || []).filter((todo: any) => {
+    return (
+      todo.userId === userId &&
+      todo.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  });
+
   return userObj === null ? (
     <div>
       <h2>Loading...</h2>
@@ -134,14 +149,30 @@ const TodoList = (props: any) => {
           <p className="text-lg font-medium text-gray-900 dark:text-white mb-2">
             Add Your Todos
           </p>
-          <div className="mb-6 relative mt-4 flex items-center space-x-2">
-            <input
-              type="text"
-              id="default-input"
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              value={newTodo}
-              onChange={(e) => setNewTodo(e.target.value)}
-            />
+
+          <div className="mb-6 mt-4 space-y-4">
+            <div className="flex items-center space-x-2">
+              <input
+                type="text"
+                id="name-input"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                placeholder="Name"
+                value={newTodo}
+                onChange={(e) => setNewTodo(e.target.value)}
+              />
+            </div>
+
+            <div className="flex items-center space-x-2">
+              <input
+                type="text"
+                id="description-input"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                placeholder="Description"
+                value={newDescription}
+                onChange={(e) => setNewDescription(e.target.value)}
+              />
+            </div>
+
             <button
               type="button"
               className="text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 font-medium rounded-lg text-sm px-5 py-2.5"
@@ -182,13 +213,13 @@ const TodoList = (props: any) => {
       <ul className="space-y-3">
         {filteredTodos.map((todo: any) => (
           <li
-            key={todo.id}
+            key={todo._id}
             className="flex items-center bg-white dark:bg-gray-800 rounded p-4 shadow-md"
           >
             <input
               checked={todo.isDone}
               type="checkbox"
-              id={`checkbox-${todo.id}`}
+              id={`checkbox-${todo._id}`}
               value=""
               className={`w-5 h-5 text-blue-600 ${
                 todo.isDone
@@ -197,13 +228,19 @@ const TodoList = (props: any) => {
               } rounded focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:border-gray-600 mr-4`}
               onChange={() => toggleDone(todo)}
             />
-            {editingTodoId === todo.id ? (
+            {editingTodoId === todo._id ? (
               // Input box for editing
               <div className="flex-1">
                 <input
                   type="text"
                   value={editedTodoText}
                   onChange={(e) => setEditedTodoText(e.target.value)}
+                  className="w-full border-b border-gray-300 dark:border-gray-600 focus:outline-none focus:border-blue-500 dark:focus:border-blue-600"
+                />
+                <input
+                  type="text"
+                  value={editedTodoDescription}
+                  onChange={(e) => setEditedTodoDescription(e.target.value)}
                   className="w-full border-b border-gray-300 dark:border-gray-600 focus:outline-none focus:border-blue-500 dark:focus:border-blue-600"
                 />
               </div>
@@ -217,18 +254,28 @@ const TodoList = (props: any) => {
                       : "text-gray-900 dark:text-white"
                   }`}
                 >
-                  {todo.text}
+                  {todo.name}
+                </span>
+                <br />
+                <span
+                  className={`${
+                    todo.isDone
+                      ? "line-through text-gray-500"
+                      : "text-gray-900 dark:text-white"
+                  }`}
+                >
+                  {todo.description}
                 </span>
               </div>
             )}
 
             {/* Buttons */}
-            {editingTodoId === todo.id ? (
+            {editingTodoId === todo._id ? (
               // Editing state: Display "Submit" and "Cancel" buttons
               <>
                 <button
                   className="ml-4 py-2 px-4 bg-green-500 text-white rounded-full hover:bg-green-600 focus:outline-none focus:ring focus:border-green-500"
-                  onClick={() => submitEditedTodo(todo.id)}
+                  onClick={() => submitEditedTodo(todo._id)}
                 >
                   Submit
                 </button>
@@ -244,13 +291,15 @@ const TodoList = (props: any) => {
               <>
                 <button
                   className="ml-4 py-2 px-4 bg-yellow-500 text-white rounded-full hover:bg-yellow-600 focus:outline-none focus:ring focus:border-yellow-500"
-                  onClick={() => deleteTodo(todo.id)}
+                  onClick={() => deleteTodo(todo._id)}
                 >
                   Delete
                 </button>
                 <button
                   className="ml-4 py-2 px-4 bg-blue-500 text-white rounded-full hover:bg-blue-600 focus:outline-none focus:ring focus:border-blue-500"
-                  onClick={() => startEditingTodo(todo.id, todo.text)}
+                  onClick={() =>
+                    startEditingTodo(todo._id, todo.name, todo.description)
+                  }
                 >
                   Edit
                 </button>
